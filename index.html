@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Proud Kingdom: Seedling Knight</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,9 +17,9 @@
       <h2 class="game-subtitle">The Seedling Knight</h2>
       <div class="title-sprite"></div>
       <div class="controls-hint">
-        <p>Arrow Keys or A/D — Move</p>
-        <p>Space or W or ↑ — Jump</p>
-        <p>Collect seeds &amp; reach the gate!</p>
+        <p>Desktop: Arrow Keys / A-D to Move &bull; Space / W / &uarr; to Jump</p>
+        <p>Mobile: On-Screen Touch Buttons</p>
+        <p>Collect seeds &amp; rare 💎 diamonds to revive!</p>
       </div>
       <button id="startBtn" class="btn btn-primary">▶ START GAME</button>
     </div>
@@ -36,17 +36,67 @@
           <div class="heart" id="h3">♥</div>
         </div>
       </div>
+      <div id="hudDiamonds">
+        <span class="hud-label">REVIVE</span>
+        <div class="hud-value">
+          <span id="diamondCount">0</span>
+          <span class="diamond-icon">💎</span>
+        </div>
+      </div>
       <div id="hudCenter">
         <span class="hud-label">SEEDS</span>
-        <span id="seedCount">0</span>
-        <span class="seed-icon">✿</span>
+        <div class="hud-value">
+          <span id="seedCount">0</span>
+          <span class="seed-icon">✿</span>
+        </div>
       </div>
       <div id="hudRight">
         <span class="hud-label">SCORE</span>
         <span id="scoreCount">0</span>
       </div>
     </div>
-    <canvas id="gameCanvas"></canvas>
+
+    <div id="canvasContainer">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- On-screen mobile touch controls -->
+    <div id="touchControls">
+      <div id="touchDpad">
+        <button id="touchLeft" class="touch-btn" aria-label="Move Left">◀</button>
+        <button id="touchRight" class="touch-btn" aria-label="Move Right">▶</button>
+      </div>
+      <div id="touchActions">
+        <button id="touchJump" class="touch-btn touch-btn-jump" aria-label="Jump">▲ JUMP</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REVIVE SCREEN ===== -->
+  <div id="reviveScreen" class="screen">
+    <div class="overlay-content revive-overlay">
+      <div class="revive-gem-icon">💎</div>
+      <h2 class="revive-title">YOU FAILED!</h2>
+      <p id="reviveSubtitle" class="revive-subtitle">Continue from where you fell?</p>
+
+      <div class="revive-diamond-box">
+        <div class="diamond-stat">
+          <span>Your Diamonds:</span>
+          <span id="reviveCurrentDiamonds" class="diamond-stat-val">0 💎</span>
+        </div>
+        <div class="diamond-stat">
+          <span>Revive Cost:</span>
+          <span class="diamond-stat-cost">2 💎</span>
+        </div>
+      </div>
+
+      <div id="reviveMsg" class="revive-status-msg"></div>
+
+      <div class="revive-btn-group">
+        <button id="reviveContinueBtn" class="btn btn-revive">✦ CONTINUE (2 💎)</button>
+        <button id="reviveGameOverBtn" class="btn btn-danger">☠ GIVE UP</button>
+      </div>
+    </div>
   </div>
 
   <!-- ===== WIN SCREEN ===== -->
@@ -56,6 +106,7 @@
       <h2 class="win-title">VICTORY!</h2>
       <p class="win-subtitle">The Kingdom is proud of you, Seedling Knight!</p>
       <div class="final-stats">
+        <div class="stat-item">Diamonds Saved: <span id="winDiamonds">0</span> 💎</div>
         <div class="stat-item">Seeds Collected: <span id="winSeeds">0</span> ✿</div>
         <div class="stat-item">Final Score: <span id="winScore">0</span></div>
       </div>
@@ -70,6 +121,7 @@
       <h2 class="gameover-title">GAME OVER</h2>
       <p class="gameover-subtitle">The Seedling Knight shall rise again!</p>
       <div class="final-stats">
+        <div class="stat-item">Diamonds Collected: <span id="goDiamonds">0</span> 💎</div>
         <div class="stat-item">Seeds Collected: <span id="goSeeds">0</span> ✿</div>
         <div class="stat-item">Final Score: <span id="goScore">0</span></div>
       </div>
