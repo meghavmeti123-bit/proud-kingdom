@@ -319,13 +319,17 @@ html, body {
 
 /* ===== GAME SCREEN & CANVAS CONTAINER ===== */
 #gameScreen {
-  flex-direction: column;
-  background: #0a0a1a;
-  display: none;
-  position: relative;
+  position: fixed;
+  inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #0a0a1a;
+  display: none;
+  flex-direction: column;
   padding: 0;
+  z-index: 10;
 }
 
 #gameScreen.active {
@@ -343,6 +347,7 @@ html, body {
   justify-content: center;
   overflow: hidden;
   touch-action: none;
+  z-index: 15;
 }
 
 #gameCanvas {
@@ -359,33 +364,35 @@ html, body {
 
 /* ===== ON-SCREEN MOBILE TOUCH CONTROLS ===== */
 #touchControls {
-  position: absolute;
-  bottom: 12px;
-  left: 0;
-  right: 0;
+  position: fixed;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  left: calc(14px + env(safe-area-inset-left, 0px));
+  right: calc(14px + env(safe-area-inset-right, 0px));
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 16px;
-  pointer-events: none; /* Let empty space pass through */
-  z-index: 90;
+  pointer-events: none; /* Empty space passes through to game */
+  z-index: 9999; /* Always on top of canvas and HUD */
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: 1 !important; /* Always fully visible on all devices */
 }
 
 #touchDpad, #touchActions {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   pointer-events: auto;
 }
 
 .touch-btn {
-  width: 62px;
-  height: 62px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: rgba(20, 25, 45, 0.75);
-  border: 2px solid rgba(100, 160, 255, 0.6);
+  background: rgba(15, 20, 45, 0.88);
+  border: 3px solid #00e5ff;
   color: #ffffff;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -394,65 +401,69 @@ html, body {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.2);
-  transition: transform 0.08s, background 0.08s, border-color 0.08s;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75), inset 0 0 10px rgba(0, 229, 255, 0.25);
+  transition: transform 0.08s, background 0.08s, border-color 0.08s, box-shadow 0.08s;
+  pointer-events: auto;
 }
 
 .touch-btn:active, .touch-btn.pressed {
-  background: rgba(46, 204, 64, 0.85);
-  border-color: #88ff88;
+  background: rgba(0, 230, 118, 0.92);
+  border-color: #69f0ae;
+  color: #003311;
   transform: scale(0.92);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), inset 0 0 14px rgba(255, 255, 255, 0.6);
 }
 
 .touch-btn-jump {
-  width: 82px;
-  height: 62px;
-  border-radius: 31px;
-  background: rgba(40, 30, 70, 0.8);
-  border-color: rgba(200, 120, 255, 0.7);
+  width: 96px;
+  height: 66px;
+  border-radius: 33px;
+  background: rgba(45, 20, 75, 0.9);
+  border: 3px solid #ff4081;
+  color: #ffffff;
   font-size: 16px;
   letter-spacing: 1px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75), inset 0 0 12px rgba(255, 64, 129, 0.3);
 }
 
 .touch-btn-jump:active, .touch-btn-jump.pressed {
-  background: rgba(180, 80, 255, 0.9);
+  background: rgba(255, 64, 129, 0.95);
   border-color: #ffd700;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), inset 0 0 16px rgba(255, 255, 255, 0.7);
 }
 
-/* Hide touch controls on non-touch desktop screens */
-@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+/* Adjust size nicely for landscape mobile / smaller vertical viewports */
+@media (max-height: 520px) {
   #touchControls {
-    opacity: 0.2;
-    transition: opacity 0.3s;
+    bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    left: calc(10px + env(safe-area-inset-left, 0px));
+    right: calc(10px + env(safe-area-inset-right, 0px));
   }
-  #touchControls:hover {
-    opacity: 1;
-  }
-}
-
-/* Show touch controls prominently on touch / small screens */
-@media (max-width: 899px), (hover: none), (pointer: coarse) {
-  #touchControls {
-    opacity: 0.95;
-  }
-}
-
-/* Adjust size on very small screens */
-@media (max-width: 480px) {
   .touch-btn {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
     font-size: 20px;
+    border-width: 2px;
   }
   .touch-btn-jump {
-    width: 72px;
-    height: 54px;
-    font-size: 14px;
+    width: 76px;
+    height: 52px;
+    font-size: 13px;
+    border-width: 2px;
   }
-  #touchControls {
-    bottom: 8px;
-    padding: 0 10px;
+}
+
+@media (max-width: 420px) {
+  .touch-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+  }
+  .touch-btn-jump {
+    width: 80px;
+    height: 56px;
+    font-size: 14px;
   }
 }
 

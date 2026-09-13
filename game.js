@@ -86,6 +86,9 @@ function setupTouchButton(btn, onStart, onEnd) {
   const handleStart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (e.pointerId !== undefined && btn.setPointerCapture) {
+      try { btn.setPointerCapture(e.pointerId); } catch(err) {}
+    }
     btn.classList.add('pressed');
     onStart();
   };
@@ -93,6 +96,9 @@ function setupTouchButton(btn, onStart, onEnd) {
   const handleEnd = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (e.pointerId !== undefined && btn.releasePointerCapture) {
+      try { btn.releasePointerCapture(e.pointerId); } catch(err) {}
+    }
     btn.classList.remove('pressed');
     onEnd();
   };
@@ -100,7 +106,6 @@ function setupTouchButton(btn, onStart, onEnd) {
   btn.addEventListener('pointerdown', handleStart);
   btn.addEventListener('pointerup', handleEnd);
   btn.addEventListener('pointercancel', handleEnd);
-  btn.addEventListener('pointerleave', handleEnd);
 
   // Fallback touch events
   btn.addEventListener('touchstart', handleStart, { passive: false });
@@ -120,6 +125,16 @@ setupTouchButton(touchJumpBtn,  () => {
   }
 }, () => {
   touchState.jump = false;
+});
+
+// Reset inputs when window blurs or visibility changes
+window.addEventListener('blur', () => {
+  touchState.left = false;
+  touchState.right = false;
+  touchState.jump = false;
+  if (touchLeftBtn) touchLeftBtn.classList.remove('pressed');
+  if (touchRightBtn) touchRightBtn.classList.remove('pressed');
+  if (touchJumpBtn) touchJumpBtn.classList.remove('pressed');
 });
 
 // Prevent scrolling & pinch-zoom gestures on canvas container
