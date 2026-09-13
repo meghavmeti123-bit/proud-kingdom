@@ -1,0 +1,399 @@
+/* ============================================================
+   PROUD KINGDOM: Seedling Knight — style.css
+   Retro pixel-art fantasy aesthetic
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Pixel-art font feel via letter-spacing */
+body {
+  background: #0a0a1a;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ===== TITLE SCREEN ===== */
+#titleScreen {
+  flex-direction: column;
+  background: linear-gradient(180deg, #1a0a3a 0%, #2a1a5a 40%, #1a3a1a 100%);
+  overflow: hidden;
+}
+
+.title-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(0,255,80,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(120,60,220,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(40,20,80,0.5) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Twinkling stars in title */
+.title-bg::before {
+  content: '★ ✦ · ★ · ✦ ★ ✦ · ★ ✦ · ★ · ✦ ★ ✦ ★';
+  position: absolute;
+  top: 8%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255,255,200,0.5);
+  letter-spacing: 18px;
+  animation: twinkle 3s infinite alternate;
+}
+
+.title-bg::after {
+  content: '· ✦ ★ ✦ · ★ · ✦ ★ ✦ ★ · ✦ ★ ✦ · ★ ✦';
+  position: absolute;
+  top: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  color: rgba(200,180,255,0.35);
+  letter-spacing: 22px;
+  animation: twinkle 4s 1s infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+.title-content {
+  position: relative;
+  text-align: center;
+  z-index: 2;
+}
+
+.crown-icon {
+  font-size: 48px;
+  color: #ffd700;
+  text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff8800;
+  animation: glow 2s ease-in-out infinite alternate;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.crown-icon.big {
+  font-size: 72px;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ffaa00, 0 0 20px #ff8800; }
+  to   { text-shadow: 0 0 24px #ffe066, 0 0 50px #ffaa00, 0 0 80px #ff6600; }
+}
+
+.game-title {
+  font-size: clamp(32px, 6vw, 64px);
+  color: #ffd700;
+  letter-spacing: 8px;
+  text-shadow: 4px 4px 0 #7a3700, 0 0 30px #ffaa00;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.game-subtitle {
+  font-size: clamp(14px, 2.5vw, 22px);
+  color: #88ff88;
+  letter-spacing: 4px;
+  text-shadow: 2px 2px 0 #004400;
+  margin-bottom: 20px;
+}
+
+/* CSS-drawn Seedling Knight sprite for title */
+.title-sprite {
+  width: 60px;
+  height: 80px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.title-sprite::before {
+  /* body */
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  width: 40px;
+  height: 50px;
+  background: #2ecc40;
+  border: 3px solid #1a7a20;
+  border-radius: 4px 4px 6px 6px;
+}
+
+.title-sprite::after {
+  /* helmet */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 44px;
+  height: 36px;
+  background: #888;
+  border: 3px solid #444;
+  border-radius: 50% 50% 0 0;
+  box-shadow: inset 0 4px 0 #aaa;
+}
+
+.controls-hint {
+  color: #aaddff;
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+  line-height: 1.9;
+  opacity: 0.85;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  padding: 14px 36px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.1s, box-shadow 0.1s;
+  border-radius: 4px;
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+.btn-primary {
+  background: #2ecc40;
+  color: #fff;
+  box-shadow: 4px 4px 0 #0a5a10, 0 0 20px rgba(46,204,64,0.4);
+  border: 2px solid #1a7a20;
+}
+
+.btn-primary:hover {
+  background: #44ee55;
+  box-shadow: 6px 6px 0 #0a5a10, 0 0 30px rgba(46,204,64,0.6);
+}
+
+.btn-danger {
+  background: #e74c3c;
+  color: #fff;
+  box-shadow: 4px 4px 0 #7a1008, 0 0 20px rgba(231,76,60,0.4);
+  border: 2px solid #9a1a10;
+}
+
+.btn-danger:hover {
+  background: #ff6655;
+  box-shadow: 6px 6px 0 #7a1008, 0 0 30px rgba(231,76,60,0.6);
+}
+
+/* ===== HUD ===== */
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(180deg, rgba(10,10,30,0.92) 0%, rgba(10,10,30,0.7) 100%);
+  border-bottom: 2px solid #3a2a6a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+}
+
+.hud-label {
+  font-size: 10px;
+  color: #8888bb;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+#hudLeft, #hudCenter, #hudRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#healthBar {
+  display: flex;
+  gap: 4px;
+}
+
+.heart {
+  font-size: 20px;
+  color: #ff4455;
+  text-shadow: 0 0 8px #ff2244;
+  transition: all 0.3s;
+}
+
+.heart.empty {
+  color: #442233;
+  text-shadow: none;
+}
+
+#seedCount, #scoreCount {
+  font-size: 20px;
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffaa00;
+  font-weight: bold;
+}
+
+.seed-icon {
+  font-size: 16px;
+  color: #88ff88;
+  margin-left: 4px;
+}
+
+/* ===== CANVAS ===== */
+#gameScreen {
+  flex-direction: column;
+  background: #0a0a1a;
+  display: none;
+}
+
+#gameScreen.active {
+  display: flex;
+}
+
+#gameCanvas {
+  display: block;
+  margin-top: 48px; /* below HUD */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ===== WIN / GAME OVER OVERLAYS ===== */
+.overlay-content {
+  text-align: center;
+  padding: 50px 60px;
+  border-radius: 8px;
+  border: 3px solid;
+  max-width: 480px;
+  width: 90%;
+}
+
+.win-overlay {
+  background: linear-gradient(135deg, #0a2a0a 0%, #1a4a1a 100%);
+  border-color: #2ecc40;
+  box-shadow: 0 0 60px rgba(46,204,64,0.3), inset 0 0 40px rgba(46,204,64,0.05);
+}
+
+.gameover-overlay {
+  background: linear-gradient(135deg, #1a0505 0%, #2a0a0a 100%);
+  border-color: #e74c3c;
+  box-shadow: 0 0 60px rgba(231,76,60,0.3), inset 0 0 40px rgba(231,76,60,0.05);
+}
+
+.skull-icon {
+  font-size: 64px;
+  color: #e74c3c;
+  text-shadow: 0 0 20px #ff2244;
+  animation: glow-red 2s ease-in-out infinite alternate;
+  display: block;
+  margin-bottom: 12px;
+}
+
+@keyframes glow-red {
+  from { text-shadow: 0 0 10px #ff2244, 0 0 20px #aa0022; }
+  to   { text-shadow: 0 0 24px #ff6655, 0 0 50px #ff2244; }
+}
+
+.win-title {
+  font-size: 48px;
+  color: #ffd700;
+  letter-spacing: 6px;
+  text-shadow: 3px 3px 0 #7a4400, 0 0 20px #ffaa00;
+  margin-bottom: 10px;
+}
+
+.win-subtitle {
+  color: #88ff88;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.gameover-title {
+  font-size: 48px;
+  color: #e74c3c;
+  letter-spacing: 4px;
+  text-shadow: 3px 3px 0 #5a0a08, 0 0 20px #ff2244;
+  margin-bottom: 10px;
+}
+
+.gameover-subtitle {
+  color: #ffaaaa;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.final-stats {
+  margin-bottom: 28px;
+  background: rgba(0,0,0,0.3);
+  padding: 14px 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.stat-item {
+  color: #ddddff;
+  font-size: 15px;
+  letter-spacing: 1px;
+  margin: 6px 0;
+}
+
+.stat-item span {
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* ===== CHECKPOINT FLASH ===== */
+#checkpointMsg {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40, 200, 60, 0.92);
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  letter-spacing: 3px;
+  padding: 8px 24px;
+  border-radius: 4px;
+  border: 2px solid #1a7a20;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 200;
+  white-space: nowrap;
+}
+
+#checkpointMsg.show {
+  opacity: 1;
+}
