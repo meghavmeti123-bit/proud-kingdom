@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Highway Rush: Drive to the Finish</title>
+  <link rel="stylesheet" href="style_1.css" />
+</head>
+<body>
+
+  <!-- ==================== MAIN MENU ==================== -->
+  <div id="mainMenuScreen" class="screen active">
+    <div class="menu-backdrop"></div>
+    <div class="menu-container">
+      <div class="game-badge">🏎️ ARCADE RACING</div>
+      <h1 class="game-title">HIGHWAY RUSH</h1>
+      <h2 class="game-subtitle">DRIVE TO THE FINISH</h2>
+
+      <div class="stats-card">
+        <div class="stat-item">
+          <span class="stat-label">COINS</span>
+          <span class="stat-val coin-text"><span class="coin-icon">🟡</span> <span id="menuCoins">0</span></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">SELECTED CAR</span>
+          <span class="stat-val" id="menuCarName">CITY FOX</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">BEST DISTANCE</span>
+          <span class="stat-val" id="menuBestDist">0 m</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">BEST SCORE</span>
+          <span class="stat-val" id="menuBestScore">0</span>
+        </div>
+      </div>
+
+      <div class="menu-car-preview">
+        <canvas id="menuCarCanvas" width="180" height="100"></canvas>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="menuPlayBtn" class="btn btn-primary pulse-btn">▶ PLAY RACE</button>
+        <button id="menuGarageBtn" class="btn btn-secondary">🚗 GARAGE & CARS</button>
+        <button id="menuHowToBtn" class="btn btn-dark">📖 HOW TO PLAY</button>
+        <button id="menuSettingsBtn" class="btn btn-dark">⚙️ SETTINGS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RACE SETUP SCREEN ==================== -->
+  <div id="raceSetupScreen" class="screen">
+    <div class="menu-backdrop"></div>
+    <div class="menu-container">
+      <h2 class="screen-title">🏁 RACE SETUP</h2>
+      <p class="screen-subtitle">Choose your race distance and difficulty</p>
+
+      <div class="setup-section">
+        <label class="section-heading">TARGET DISTANCE</label>
+        <div class="option-grid distance-options">
+          <button class="option-btn dist-btn" data-dist="500">500 m</button>
+          <button class="option-btn dist-btn active" data-dist="1000">1 km</button>
+          <button class="option-btn dist-btn" data-dist="2000">2 km</button>
+          <button class="option-btn dist-btn" data-dist="5000">5 km</button>
+        </div>
+      </div>
+
+      <div class="setup-section">
+        <label class="section-heading">DIFFICULTY</label>
+        <div class="option-grid diff-options">
+          <button class="option-btn diff-btn" data-diff="easy">
+            <span class="diff-title">EASY</span>
+            <span class="diff-sub">Relaxed Traffic & Extra Time</span>
+          </button>
+          <button class="option-btn diff-btn active" data-diff="medium">
+            <span class="diff-title">MEDIUM</span>
+            <span class="diff-sub">Standard Challenge</span>
+          </button>
+          <button class="option-btn diff-btn" data-diff="hard">
+            <span class="diff-title">HARD</span>
+            <span class="diff-sub">Dense & Fast Highway</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="setup-info-box">
+        <div class="info-row">
+          <span>Target Goal:</span>
+          <strong id="setupTargetDisplay">1000 m</strong>
+        </div>
+        <div class="info-row">
+          <span>Time Limit:</span>
+          <strong id="setupTimeDisplay">90s</strong>
+        </div>
+        <div class="info-row">
+          <span>Target Reward:</span>
+          <strong id="setupRewardDisplay" class="coin-text">🟡 500 Coins</strong>
+        </div>
+      </div>
+
+      <div class="setup-actions">
+        <button id="startRaceBtn" class="btn btn-primary pulse-btn">🚀 START DRIVING</button>
+        <button id="backFromSetupBtn" class="btn btn-secondary">BACK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GARAGE SCREEN ==================== -->
+  <div id="garageScreen" class="screen">
+    <div class="menu-backdrop"></div>
+    <div class="garage-container">
+      <div class="garage-header">
+        <div>
+          <h2 class="screen-title">🏎️ GARAGE</h2>
+          <p class="screen-subtitle">Unlock and customize high-speed machines</p>
+        </div>
+        <div class="wallet-badge">
+          <span class="coin-icon">🟡</span>
+          <span id="garageCoins">0</span>
+        </div>
+      </div>
+
+      <!-- Car Card Carousel / List -->
+      <div class="car-carousel" id="carCardsContainer">
+        <!-- Generated by JavaScript -->
+      </div>
+
+      <!-- Selected Car Showcase -->
+      <div class="showcase-card">
+        <div class="showcase-visual">
+          <canvas id="garageCarCanvas" width="220" height="120"></canvas>
+          <div class="car-meta">
+            <h3 id="showcaseName">CITY FOX</h3>
+            <span id="showcaseBrand" class="brand-tag">Apex Motors</span>
+            <div id="showcasePriceTag" class="price-tag">FREE</div>
+          </div>
+        </div>
+
+        <div class="showcase-stats">
+          <div class="stat-bar-group">
+            <div class="stat-bar-label"><span>SPEED</span><span id="statSpeedVal">70</span></div>
+            <div class="stat-bar-track"><div id="statSpeedBar" class="stat-bar-fill"></div></div>
+          </div>
+          <div class="stat-bar-group">
+            <div class="stat-bar-label"><span>HANDLING</span><span id="statHandlingVal">90</span></div>
+            <div class="stat-bar-track"><div id="statHandlingBar" class="stat-bar-fill"></div></div>
+          </div>
+          <div class="stat-bar-group">
+            <div class="stat-bar-label"><span>BRAKING</span><span id="statBrakingVal">85</span></div>
+            <div class="stat-bar-track"><div id="statBrakingBar" class="stat-bar-fill"></div></div>
+          </div>
+        </div>
+
+        <!-- Color Customization -->
+        <div class="color-palette-section">
+          <span class="palette-title">CHOOSE COLOR</span>
+          <div class="color-swatches" id="colorSwatchesContainer">
+            <button class="color-swatch active" data-color="#ff3344" style="background:#ff3344;" title="Red"></button>
+            <button class="color-swatch" data-color="#2288ff" style="background:#2288ff;" title="Blue"></button>
+            <button class="color-swatch" data-color="#1f242d" style="background:#1f242d;" title="Black"></button>
+            <button class="color-swatch" data-color="#f0f4f8" style="background:#f0f4f8;" title="White"></button>
+            <button class="color-swatch" data-color="#ffcc00" style="background:#ffcc00;" title="Yellow"></button>
+            <button class="color-swatch" data-color="#22cc66" style="background:#22cc66;" title="Green"></button>
+            <button class="color-swatch" data-color="#ff7711" style="background:#ff7711;" title="Orange"></button>
+            <button class="color-swatch" data-color="#9933ff" style="background:#9933ff;" title="Purple"></button>
+          </div>
+        </div>
+
+        <div class="showcase-actions">
+          <button id="garageActionBtn" class="btn btn-primary">SELECT</button>
+          <button id="garageBackBtn" class="btn btn-secondary">BACK TO MENU</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HOW TO PLAY SCREEN ==================== -->
+  <div id="howToScreen" class="screen">
+    <div class="menu-backdrop"></div>
+    <div class="menu-container">
+      <h2 class="screen-title">📖 HOW TO PLAY</h2>
+      <div class="how-to-content">
+        <div class="instructions-block">
+          <h3>🎯 OBJECTIVE</h3>
+          <p>Drive along the highway and reach your target distance before time expires. Avoid traffic collisions, overtake safely, and collect coins on the asphalt!</p>
+        </div>
+
+        <div class="instructions-block">
+          <h3>⌨️ DESKTOP / LAPTOP CONTROLS</h3>
+          <ul>
+            <li><strong>A / Left Arrow</strong> : Steer Left</li>
+            <li><strong>D / Right Arrow</strong> : Steer Right</li>
+            <li><strong>W / Up Arrow</strong> : Accelerate (Speed Up)</li>
+            <li><strong>S / Down Arrow / Space</strong> : Brake (Slow Down)</li>
+            <li><strong>P / ESC</strong> : Pause / Resume Game</li>
+            <li><strong>R</strong> : Quick Restart after Game Over</li>
+          </ul>
+        </div>
+
+        <div class="instructions-block">
+          <h3>📱 MOBILE TOUCH CONTROLS</h3>
+          <ul>
+            <li><strong>LEFT / RIGHT</strong> : Hold to steer smoothly between lanes</li>
+            <li><strong>ACCELERATE</strong> : Hold to boost car speed</li>
+            <li><strong>BRAKE</strong> : Hold to brake and avoid collisions</li>
+          </ul>
+        </div>
+
+        <div class="instructions-block">
+          <h3>❤️ HEALTH & TRAFFIC RULES</h3>
+          <p>You have 3 Health points. Hitting traffic slows you down and deals damage. When health reaches 0 or time runs out, the race ends!</p>
+        </div>
+      </div>
+      <button id="backFromHowToBtn" class="btn btn-primary">GOT IT!</button>
+    </div>
+  </div>
+
+  <!-- ==================== SETTINGS SCREEN ==================== -->
+  <div id="settingsScreen" class="screen">
+    <div class="menu-backdrop"></div>
+    <div class="menu-container">
+      <h2 class="screen-title">⚙️ SETTINGS</h2>
+      <div class="settings-form">
+        <div class="setting-row">
+          <span>Sound Effects (SFX)</span>
+          <label class="switch">
+            <input type="checkbox" id="settingSoundToggle" checked />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span>Engine Sound</span>
+          <label class="switch">
+            <input type="checkbox" id="settingEngineToggle" checked />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span>Mobile Controls Size</span>
+          <select id="settingControlSize" class="select-input">
+            <option value="normal" selected>Normal</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+      </div>
+      <div class="menu-buttons">
+        <button id="saveSettingsBtn" class="btn btn-primary">SAVE & CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="gameScreen" class="screen">
+    <!-- Top HUD -->
+    <div id="gameHud">
+      <div class="hud-box hud-dist">
+        <span class="hud-label">DISTANCE</span>
+        <span class="hud-val" id="hudDistance">0 m / 1000 m</span>
+        <div class="dist-progress-bar"><div id="distFill" class="dist-fill"></div></div>
+      </div>
+      <div class="hud-box hud-time">
+        <span class="hud-label">TIME</span>
+        <span class="hud-val" id="hudTime">01:30</span>
+      </div>
+      <div class="hud-box hud-speed">
+        <span class="hud-label">SPEED</span>
+        <span class="hud-val" id="hudSpeed">0 km/h</span>
+      </div>
+      <div class="hud-box hud-coins">
+        <span class="hud-label">COINS</span>
+        <span class="hud-val coin-text">🟡 <span id="hudCoins">0</span></span>
+      </div>
+      <div class="hud-box hud-health">
+        <span class="hud-label">HEALTH</span>
+        <div id="hudHealthHearts" class="health-hearts">
+          <span class="heart full" id="heart1">❤️</span>
+          <span class="heart full" id="heart2">❤️</span>
+          <span class="heart full" id="heart3">❤️</span>
+        </div>
+      </div>
+      <button id="pauseBtn" class="btn-icon-pause" aria-label="Pause Game">⏸️</button>
+    </div>
+
+    <!-- Canvas Viewport -->
+    <div id="canvasWrapper">
+      <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- Damage / Collision Overlay -->
+    <div id="damageFlashOverlay" class="damage-flash"></div>
+
+    <!-- Floating notifications/banner -->
+    <div id="gameBanner" class="game-banner"></div>
+
+    <!-- Mobile Touch Controls -->
+    <div id="mobileTouchControls" class="touch-controls-container">
+      <div class="touch-group touch-left-group">
+        <button id="btnTouchLeft" class="touch-btn touch-btn-steer" aria-label="Steer Left">
+          <span class="btn-arrow">◀</span>
+          <span class="btn-text">LEFT</span>
+        </button>
+        <button id="btnTouchRight" class="touch-btn touch-btn-steer" aria-label="Steer Right">
+          <span class="btn-text">RIGHT</span>
+          <span class="btn-arrow">▶</span>
+        </button>
+      </div>
+      <div class="touch-group touch-right-group">
+        <button id="btnTouchBrake" class="touch-btn touch-btn-brake" aria-label="Brake">
+          <span class="btn-icon">🛑</span>
+          <span class="btn-text">BRAKE</span>
+        </button>
+        <button id="btnTouchGas" class="touch-btn touch-btn-gas" aria-label="Accelerate">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">ACCELERATE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAUSE MODAL ==================== -->
+  <div id="pauseModal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">⏸️ GAME PAUSED</h2>
+      <p class="modal-desc">Take a breather or change your route</p>
+      <div class="modal-buttons">
+        <button id="resumeBtn" class="btn btn-primary">▶ RESUME</button>
+        <button id="restartPausedBtn" class="btn btn-secondary">🔄 RESTART</button>
+        <button id="quitToMenuBtn" class="btn btn-dark">🏠 MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WIN SCREEN ==================== -->
+  <div id="winScreen" class="screen">
+    <div class="menu-backdrop win-backdrop"></div>
+    <div class="menu-container result-card">
+      <div class="result-trophy">🏁🏆🏁</div>
+      <h2 class="result-title win-text">YOU MADE IT!</h2>
+      <p class="result-subtitle">You reached the finish line in time!</p>
+
+      <div class="result-stats">
+        <div class="r-stat-row">
+          <span>Distance Reached:</span>
+          <strong id="winDistVal">1,000 m</strong>
+        </div>
+        <div class="r-stat-row">
+          <span>Time Remaining:</span>
+          <strong id="winTimeVal">00:24</strong>
+        </div>
+        <div class="r-stat-row">
+          <span>Coins Collected:</span>
+          <strong id="winCoinsVal" class="coin-text">🟡 +180</strong>
+        </div>
+        <div class="r-stat-row">
+          <span>Finish Bonus:</span>
+          <strong id="winBonusVal" class="coin-text">🟡 +500</strong>
+        </div>
+        <div class="r-stat-row total-row">
+          <span>Total Score:</span>
+          <strong id="winScoreVal">4,520</strong>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="winPlayAgainBtn" class="btn btn-primary pulse-btn">🔄 PLAY AGAIN</button>
+        <button id="winGarageBtn" class="btn btn-secondary">🚗 GARAGE</button>
+        <button id="winMenuBtn" class="btn btn-dark">🏠 MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GAME OVER SCREEN ==================== -->
+  <div id="gameOverScreen" class="screen">
+    <div class="menu-backdrop loss-backdrop"></div>
+    <div class="menu-container result-card">
+      <div class="result-trophy" id="lossIcon">💥</div>
+      <h2 class="result-title loss-text" id="lossTitle">CAR CRASHED!</h2>
+      <p class="result-subtitle" id="lossReason">Your vehicle took too much structural damage!</p>
+
+      <div class="result-stats">
+        <div class="r-stat-row">
+          <span>Distance Reached:</span>
+          <strong id="lossDistVal">650 m / 1,000 m</strong>
+        </div>
+        <div class="r-stat-row">
+          <span>Coins Collected:</span>
+          <strong id="lossCoinsVal" class="coin-text">🟡 +45</strong>
+        </div>
+        <div class="r-stat-row total-row">
+          <span>Final Score:</span>
+          <strong id="lossScoreVal">1,240</strong>
+        </div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="lossRetryBtn" class="btn btn-primary pulse-btn">🔄 TRY AGAIN (R)</button>
+        <button id="lossGarageBtn" class="btn btn-secondary">🚗 GARAGE</button>
+        <button id="lossMenuBtn" class="btn btn-dark">🏠 MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game_1.js"></script>
+</body>
+</html>
